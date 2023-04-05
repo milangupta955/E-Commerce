@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const emaili = process.env.email || require('../secrets').email;
+const emaili = process.env.email;
 module.exports = async function sendMail(email,otp) {
     try {
         let transporter = nodemailer.createTransport({
