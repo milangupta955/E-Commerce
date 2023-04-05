@@ -1,11 +1,12 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
+// const cors = require('cors');
 const cookieParser = require('cookie-parser');
-app.use(cors({
-    credentials: true,
-    origin: "http://localhost:3001",
-}));
+// app.use(cors({
+//     credentials: true,
+//     origin: "http://localhost:3001",
+// }));
+const port = process.env.port || 3000;
 app.use(express.json());
 app.use(cookieParser());
 const authRouter = require('./Routes/authRoutes');
@@ -18,6 +19,6 @@ app.use('/product',productRouter);
 app.use('/review',reviewRouter);
 app.use('/order',orderRouter);
 app.use('/cart',cartRouter);
-app.listen(3000,function() {
+app.listen(port,function() {
     console.log("Listening on Port 3000");
 })
