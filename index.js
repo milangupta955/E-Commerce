@@ -14,6 +14,15 @@ const productRouter = require('./Routes/productRoutes');
 const reviewRouter = require('./Routes/reviewRoutes');
 const orderRouter = require('./Routes/orderRoutes');
 const cartRouter = require('./Routes/cartRoutes');
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", function (_, res) {
+  res.sendFile(
+    path.join(__dirname, "./client/build/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 app.use('/auth',authRouter);
 app.use('/product',productRouter);
 app.use('/review',reviewRouter);
