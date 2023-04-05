@@ -1,0 +1,11 @@
+const express = require('express');
+const { protectedRoute } = require('../Utility/protectedRoute');
+const { addToCart, getAllCartProduct, getAllCustomerProductCart, getOneCartProduct, updateCart, deleteProductFromCart } = require('../Controller/cartController');
+const cartRouter = express.Router();
+cartRouter.post('/addToCart/:id',protectedRoute,addToCart);
+cartRouter.get('/getAllCartProducts',getAllCartProduct);
+cartRouter.get('/getAllCustomerProductCart',protectedRoute,getAllCustomerProductCart);
+cartRouter.get('/getOneCartProduct/:id',getOneCartProduct);
+cartRouter.patch('/updateCart/:id',protectedRoute,updateCart);
+cartRouter.delete('/deleteProductFromCart/:id',protectedRoute,deleteProductFromCart);
+module.exports = cartRouter;

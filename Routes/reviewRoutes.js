@@ -1,0 +1,10 @@
+const express = require('express');
+const { protectedRoute } = require('../Utility/protectedRoute');
+const { addReview, getProductReview, getOneReview, updateReview, deleteReview } = require('../Controller/reviewController');
+const reviewRouter = express.Router();
+reviewRouter.post('/addReview/:id',protectedRoute,addReview);
+reviewRouter.get('/getProductReview/:id',getProductReview);
+reviewRouter.get('/getOneReview/:id',getOneReview);
+reviewRouter.patch('/updateReview/:id',protectedRoute,updateReview);
+reviewRouter.delete('/deleteReview/:id',protectedRoute,deleteReview);
+module.exports = reviewRouter; 
