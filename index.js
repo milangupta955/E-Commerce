@@ -17,8 +17,10 @@ const orderRouter = require('./Routes/orderRoutes');
 const cartRouter = require('./Routes/cartRoutes');
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (_, res) {
+  var filePath = "./client/build/index.html";
+  var resolvedPath = path.resolve(filePath);
   res.sendFile(
-    path.join(__dirname, "./client/build/index.html"),
+    resolvedPath,
     function (err) {
       res.status(500).send(err);
     }
