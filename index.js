@@ -12,17 +12,17 @@ const productRouter = require('./Routes/productRoutes');
 const reviewRouter = require('./Routes/reviewRoutes');
 const orderRouter = require('./Routes/orderRoutes');
 const cartRouter = require('./Routes/cartRoutes');
-// app.use(express.static(path.join(__dirname, "./client/build")));
-// app.get("*", function (_, res) {
-//   var filePath = "./client/build/index.html";
-//   var resolvedPath = path.resolve(filePath);
-//   res.sendFile(
-//     resolvedPath,
-//     function (err) {
-//       res.status(500).send(err);
-//     }
-//   );
-// });
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", function (_, res) {
+  var filePath = "./client/build/index.html";
+  var resolvedPath = path.resolve(filePath);
+  res.sendFile(
+    resolvedPath,
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 app.use('/auth',authRouter);
 app.use('/product',productRouter);
 app.use('/review',reviewRouter);
