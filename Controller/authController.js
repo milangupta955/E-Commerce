@@ -1,5 +1,4 @@
 const userModel = require('../Model/userModel');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const privateKey = process.env.privateKey || require('../secrets').privateKey;
 const sendMail = require('../Utility/sendMail');
@@ -7,11 +6,10 @@ const sendMail = require('../Utility/sendMail');
 module.exports.signup = async function (req, res) {
     try {
         const { name, email, password, profilepic } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
         const user = await userModel.create({
             name: name,
             email: email,
-            password: hashedPassword,
+            password: password,
             profilePic: (profilepic != '') ? profilepic : ""
         });
         if (user) {
@@ -38,8 +36,7 @@ module.exports.login = async function (req, res) {
         const { email, password } = req.body;
         const user = await userModel.findOne({ email: email });
         if (user) {
-            const ans = await bcrypt.compare(password, user.password);
-            if (ans) {
+            if (password === user.password) {
                 // create a jwt token 
                 const loginToken = jwt.sign({
                     data: user["_id"],
@@ -104,11 +101,10 @@ module.exports.resetPassword = async function (req, res) {
     try {
         let { otp, password } = req.body;
         let user = await userModel.findOne({ otp: otp });
-        let hashedPassword = await bcrypt.hash(password, 10);
         if (user) {
             const date = Date.now();
             if (user.otpExpiry > date) {
-                user.password = hashedPassword;
+                user.password = password;
                 user.otp = undefined;
                 user.otpExpiry = undefined;
                 await user.save();
