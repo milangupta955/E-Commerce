@@ -1,7 +1,7 @@
 const userModel = require('../Model/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const privateKey = process.env.privateKey;
+const privateKey = process.env.privateKey || require('../secrets').privateKey;
 const sendMail = require('../Utility/sendMail');
 
 module.exports.signup = async function (req, res) {
@@ -35,7 +35,6 @@ module.exports.signup = async function (req, res) {
 
 module.exports.login = async function (req, res) {
     try {
-        console.log("Login Called");
         const { email, password } = req.body;
         const user = await userModel.findOne({ email: email });
         if (user) {
