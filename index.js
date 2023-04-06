@@ -12,6 +12,11 @@ const productRouter = require('./Routes/productRoutes');
 const reviewRouter = require('./Routes/reviewRoutes');
 const orderRouter = require('./Routes/orderRoutes');
 const cartRouter = require('./Routes/cartRoutes');
+app.use('/auth',authRouter);
+app.use('/product',productRouter);
+app.use('/review',reviewRouter);
+app.use('/order',orderRouter);
+app.use('/cart',cartRouter);
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (_, res) {
   var filePath = "./client/build/index.html";
@@ -23,11 +28,6 @@ app.get("*", function (_, res) {
     }
   );
 });
-app.use('/auth',authRouter);
-app.use('/product',productRouter);
-app.use('/review',reviewRouter);
-app.use('/order',orderRouter);
-app.use('/cart',cartRouter);
 app.listen(port,function() {
     console.log("Listening on Port 3000");
 })
