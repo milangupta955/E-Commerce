@@ -104,13 +104,24 @@ module.exports.updateReview = async function (req, res) {
             let user_id = req.user_id;
             if(review.userId == user_id) {
                 for(let key in DataToBeUpdated) {
-                    review[key] = DataToBeUpdated[key];
-                    if(key == "ratingGiven") {
+                    if(key === "ratingGiven") {
+                        console.log("Here Come for editing Rating");
                         const prd = await productModel.findById(review.productId);
-                        let newRating = DataToBeUpdated[key];
-                        prd.rating = (prd.rating * prd.numRating + newRating - review.ratingGiven) / prd.numRating;
-                        await prd.save();
+                        if(prd) {
+                            console.log("Product Found SuccessFully");
+                            let newRating = DataToBeUpdated[key];
+                            let oldRating = prd.rating;
+                            let newProductRating = ((Number)(oldRating) * (Number)(prd.numRating) + (Number)(newRating) - (Number)(review.ratingGiven)) / (Number)(prd.numRating);
+                            console.log(newProductRating);
+                            prd.rating = newProductRating;
+                            await prd.save();
+                        } else {
+                            res.json({
+                                message: "Product Not Found"
+                            });
+                        }
                     }
+                    review[key] = DataToBeUpdated[key];
                 }
                 await review.save();
                 res.json({
@@ -145,7 +156,7 @@ module.exports.deleteReview = async function (req, res) {
                     prd.rating = 0;
                     prd.numRating = 0;
                 } else {
-                    let newRating = (prd.rating * prd.numRating - review.ratingGiven) / (prd.numRating - 1);
+                    let newRating = ((Number)(prd.rating) * (Number)(prd.numRating) - (Number)(review.ratingGiven)) / ((Number)(prd.numRating) - 1);
                     prd.rating = newRating;
                     prd.numRating--;
                 }
