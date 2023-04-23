@@ -28,6 +28,40 @@ app.get("*", function (_, res) {
     }
   );
 });
+app.post('/payment',(req,res) => {
+  const {product,token} = req.body;
+  // const idempotencyKey = uuid();
+  return stripe.customers.create({
+      email: token.email,
+      source: token.id
+  }).then((customer) => {
+      stripe.charges.create({
+          ammount : product.price * 100,
+          currency : "INR",
+          customer: customer.id,
+          description: "This is Payment"
+      });
+  }).then((result)=> {
+      console.log("Payment Success");
+      res.status(200).json(result);
+  }).catch(err => {
+      console.log(err.message);
+      res.status(401).json(err);
+  })
+});
+app.post('/sendFeedback',(req,res) => {
+  try {
+      const {email,message,subject} = req.body;
+      sendMail(email,message,subject);
+      res.status(201).json({
+          message: "Message Sent SuccessFully"
+      })
+  } catch(err) {
+      res.status(401).json({
+          message: "Unable To Send Message",
+      })
+  }
+});
 app.listen(port,function() {
     console.log("Listening on Port 3000");
 })
