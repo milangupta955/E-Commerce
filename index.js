@@ -22,6 +22,16 @@ app.use('/product',productRouter);
 app.use('/review',reviewRouter);
 app.use('/order',orderRouter);
 app.use('/cart',cartRouter);
+app.get("*", function (_, res) {
+  var filePath = "./client/build/index.html";
+  var resolvedPath = path.resolve(filePath);
+  res.sendFile(
+    resolvedPath,
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 app.post('/payment',(req,res) => {
     const {product,token} = req.body;
     // const idempotencyKey = uuid();
