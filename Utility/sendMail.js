@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
-const emaili = require('../secrets').email;
+const email = process.env.email;
+const password = process.env.password
 module.exports = async function sendMail(email,message,subject="OTP") {
     try {
         let transporter = nodemailer.createTransport({
@@ -7,8 +8,8 @@ module.exports = async function sendMail(email,message,subject="OTP") {
             port: 587,
             secure: false,
             auth: {
-              user: emaili.user, 
-              pass: emaili.pass,
+              user: email, 
+              pass: password,
             },
           });
           let info = await transporter.sendMail({
