@@ -2,13 +2,14 @@ const express = require('express');
 const secret_key = process.env.secret_key;
 const stripe = require('stripe')(secret_key);
 // const uuid = require('uuid/v4');
+const path = require('path');
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-app.use(cors({
-    credentials: true,
-    origin: "http://localhost:3001",
-}));
+// app.use(cors({
+//     credentials: true,
+//     origin: "http://localhost:3001",
+// }));
 app.use(express.json());
 app.use(cookieParser());
 const authRouter = require('./Routes/authRoutes');
