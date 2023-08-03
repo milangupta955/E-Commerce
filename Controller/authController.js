@@ -1,6 +1,7 @@
 const userModel = require('../Model/userModel');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const privateKey = process.env.privateKey || require('../secrets').privateKey;
+const privateKey = require('../secrets').privateKey;
 const sendMail = require('../Utility/sendMail');
 
 module.exports.signup = async function (req, res) {
@@ -10,7 +11,8 @@ module.exports.signup = async function (req, res) {
             name: name,
             email: email,
             password: password,
-            profilePic: (profilepic != '') ? profilepic : ""
+            profilePic: (profilepic != '') ? profilepic : "",
+            role: 'user'
         });
         if (user) {
             res.status(201).json({
@@ -33,13 +35,14 @@ module.exports.signup = async function (req, res) {
 
 module.exports.login = async function (req, res) {
     try {
+        console.log("Login Called");
         const { email, password } = req.body;
         const user = await userModel.findOne({ email: email });
         if (user) {
             if (password === user.password) {
                 // create a jwt token 
                 const loginToken = jwt.sign({
-                    data: user["_id"],
+                    data: user,
                 }, privateKey, { expiresIn: 24 * 15 * 60 * 60 });
                 res.cookie('login', loginToken);
                 user.password = undefined;

@@ -1,12 +1,18 @@
 const jwt = require('jsonwebtoken');
 const key = require('../secrets').privateKey;
-module.exports.protectedRoute = function(req,res,next) {
+module.exports.adminprotectedRoute = function(req,res,next) {
     let token = req.cookies.login;
     const payload = jwt.verify(token,key);
     if(payload) {
         const user_id = payload.data.id;
         req.user_id = user_id;
-        next();
+        if(payload.data.role === "admin") {
+            next();
+        } else {
+            res.status(402).json({
+                message : "Only Admin Can Access"
+            })
+        }
     } else {
         res.status(402).json({
             message: "You Must Logged In"

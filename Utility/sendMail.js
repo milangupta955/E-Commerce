@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
-const email = process.env.email || require('../secrets').email;
-const password = process.env.password || require('../secrets').password;
+const emaili = require('../secrets').email;
 module.exports = async function sendMail(email,message,subject="OTP") {
     try {
         let transporter = nodemailer.createTransport({
@@ -8,16 +7,17 @@ module.exports = async function sendMail(email,message,subject="OTP") {
             port: 587,
             secure: false,
             auth: {
-              user: email, 
-              pass: password,
+              user: emaili.user, 
+              pass: emaili.pass,
             },
           });
           let info = await transporter.sendMail({
             from: 'milanguta95@gmail.com',
             to: email,
             subject: subject,
-            text: otp,
+            text: message,
           });
     } catch(err) {
+      console.log(err);
     }
 }

@@ -77,17 +77,19 @@ module.exports.updateProduct = async function(req,res) {
             for(let key in DataToBeUpdated) {
                 product[key] = DataToBeUpdated[key];
             }
-            await product.save();
-            res.status(201).json({
-                message: "Data Updated SuccessFully"
-            })
+            let savedProduct = await product.save();
+            if(savedProduct) {
+                res.status(201).json({
+                    message: "Data Updated SuccessFully"
+                });
+            }
         } else {
             res.status(404).json({
                 message: "Product Not Found"
             })
         }
     } catch(err) {
-        res.json(501).json({
+        res.status(501).json({
             message: err.message
         })
     }

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const emailValidator = require('email-validator');
-const db_link = process.env.db_link||require("../secrets").db_link;
-
+const db_link = require('../secrets').db_link;
 mongoose.connect(db_link).then(() => {
     console.log("SuccessFully Connected to the Database");
 }).catch((err) => {
@@ -38,6 +37,10 @@ const userSchema = new mongoose.Schema({
     //         }
     //     }
     // },
+    role: {
+        type: String,
+        enum: ['admin','user'],
+    },
     profilePic: {
         type: String
     },

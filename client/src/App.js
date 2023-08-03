@@ -1,7 +1,6 @@
 import React from 'react'
 import Navbar from './Components/Navbar'
 import { Route } from 'react-router'
-import ProductAdder from './Components/Product/ProductAdder'
 import { BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './Components/Home';
 import Login from './Components/Auth/Login';
@@ -16,13 +15,14 @@ import Cart from './Components/Cart';
 import ProductPage from './Components/ProductPage';
 import PaymentSuccess from './Components/PaymentSuccess';
 import Footer from './Components/Footer';
+import AdminPanel from './Components/Admin/AdminPanel';
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/addProduct' Component={ProductAdder}></Route>
+          <Route path='/adminPanel' Component={AdminPanel}></Route>
           <Route path='/home' Component={Home}></Route>
           <Route path='/login' Component={Login}></Route>
           <Route path='/signup' Component={Signup}></Route>

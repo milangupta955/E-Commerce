@@ -66,7 +66,7 @@ export const addToCart = (quantity,pname,productpic,id,price) => {
             price: price
         }).then(res => {
             let cartProducts = localStorage.getItem('cart');
-            cartProducts = cartProducts === [] ? [JSON.parse(res.data.data)] : [...cartProducts,JSON.parse(res.data.data)];
+            cartProducts = (cartProducts === []) ? [JSON.parse(res.data.data)] : [...cartProducts,JSON.parse(res.data.data)];
             localStorage.setItem('cart',cartProducts);
             dispatch({
                 type : 'ADD_TO_CART_SUCCESS',
