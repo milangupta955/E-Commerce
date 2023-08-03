@@ -1,5 +1,5 @@
 const express = require('express');
-const {secret_key} = require('./secrets');
+const secret_key = process.env.secret_key;
 const stripe = require('stripe')(secret_key);
 // const uuid = require('uuid/v4');
 const app = express();
